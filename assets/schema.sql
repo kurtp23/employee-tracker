@@ -15,7 +15,9 @@ id INT NOT NULL AUTO_INCREMENT,
 title VARCHAR(30) NOT NULL,
 salary DECIMAL NOT NULL,
 department_id INT NOT NULL,
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+FOREIGN KEY  (department_id)
+REFERENCES departments(id)
 );
 
 CREATE TABLE employees (
@@ -24,26 +26,36 @@ first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
 role_id INT NOT NULL,
 manager_id INT ,
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+FOREIGN KEY  (role_id)
+REFERENCES roles(id),
+FOREIGN KEY  (manager_id)
+REFERENCES employees(id)
 );
 
-INSERT INTO departments (name)
-VALUES ("Sales");
 
 INSERT INTO departments (name)
-VALUES ("Engineering");
+VALUES ("Marketing"),
+("Engineering");
+
+
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ("Sales Executive", 50000.00, 1);
+VALUES ("Sales Executive", 50000.00, 1),
+("Lead Engineer", 100000.00, 2);
 
-INSERT INTO roles (title, salary, department_id)
-VALUES ("Lead Engineer", 100000.00, 2);
 
-INSERT INTO employees (first_name, last_name, role_id)
-VALUES ("Kurt","Phillips", 1);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Troy","Phillips", 2, 1);
+VALUES ("Kurt","Phillips", 1, NULL),
+("Troy","Phillips", 2, 1);;
+
+SELECT e1.first_name, e1.last_name, r.title AS  "role", r.salary, CONCAT (e2.first_name,' ',e2.last_name) AS Manager
+FROM employees AS e1
+LEFT JOIN roles AS r
+ON e1.role_id = r.id
+LEFT JOIN employees AS e2
+ON e1.manager_id = e2.id;
 
 
 SELECT * FROM employee_db.departments;

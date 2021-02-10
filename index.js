@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const dbFunc = require("./assets/database.js");
 
 const questions = [
   {
@@ -17,26 +18,36 @@ const questions = [
   },
 ];
 function handleAnswers(answers) {
-  if (answers.saveInfo === "play") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "Add Department") {
+    dbFunc.insertDepartment();
   }
-  if (answers.saveInfo === "feed") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "View Departments") {
+    dbFunc.departments().then((res) => {
+      console.table(res);
+      displayMenu();
+    });
   }
-  if (answers.saveInfo === "go outside") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "Add Role") {
+    dbFunc.roles();
   }
-  if (answers.saveInfo === "go inside") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "View Roles") {
+    dbFunc.roles().then((res) => {
+      console.table(res);
+      displayMenu();
+    });
   }
-  if (answers.saveInfo === "sleep") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "Add Employee") {
+    dbFunc.insertEmployees();
   }
-  if (answers.saveInfo === "Ruin Furniture") {
-    inquirer.prompt(questions).then(handleAnswers);
-  }
-  if (answers.saveInfo === "Buy Furniture") {
-    inquirer.prompt(questions).then(handleAnswers);
+  if (answers.saveInfo === "View Employees") {
+    dbFunc.employees().then((res) => {
+      console.table(res);
+      displayMenu();
+    });
   }
 }
-inquirer.prompt(questions).then(handleAnswers);
+function displayMenu() {
+  inquirer.prompt(questions).then(handleAnswers);
+}
+
+displayMenu();

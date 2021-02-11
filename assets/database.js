@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 const util = require("util");
+
 var connection = mysql.createConnection({
   host: "localhost",
 
@@ -20,7 +21,7 @@ connection.connect(function (err) {
   console.log("connected as id " + connection.threadId + "\n");
 });
 connection.query = util.promisify(connection.query);
-let results;
+
 function employees() {
   return connection.query(`
   SELECT e1.first_name, e1.last_name, r.title AS  "role", r.salary, CONCAT (e2.first_name,' ',e2.last_name) AS Manager
@@ -35,7 +36,9 @@ function departments() {
   return connection.query("SELECT * FROM departments");
 }
 function roles() {
-  return connection.query("SELECT * FROM roles");
+  return connection.query(`
+  SELECT title AS Role, salary AS Salary
+  FROM roles `);
 }
 function insertRoles() {
   const questions = [
@@ -131,4 +134,5 @@ module.exports = {
   roles,
   insertDepartment,
   insertEmployees,
+  insertRoles,
 };

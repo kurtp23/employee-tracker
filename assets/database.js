@@ -107,7 +107,7 @@ function insertEmployees() {
   inquirer.prompt(questions).then(handleInput);
 }
 
-function insertDepartment() {
+async function insertDepartment() {
   const questions = [
     {
       type: "input",
@@ -117,15 +117,12 @@ function insertDepartment() {
   ];
 
   function handleInput(answers) {
-    connection.query(
+    return connection.query(
       `INSERT INTO departments (name)
-    VALUES ("${answers.newDepartment}")`,
-      function (err, res) {
-        if (err) throw err;
-      }
+    VALUES ("${answers.newDepartment}")`
     );
   }
-  inquirer.prompt(questions).then(handleInput);
+  return inquirer.prompt(questions).then(handleInput);
 }
 
 module.exports = {

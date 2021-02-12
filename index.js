@@ -6,7 +6,7 @@ const questions = [
   {
     type: "list",
     name: "saveInfo",
-    message: "Would you like to save this information?",
+    message: "options",
     choices: [
       "Add Department",
       "View Departments",
@@ -17,9 +17,10 @@ const questions = [
     ],
   },
 ];
-function handleAnswers(answers) {
+async function handleAnswers(answers) {
   if (answers.saveInfo === "Add Department") {
-    dbFunc.insertDepartment();
+    await dbFunc.insertDepartment();
+    displayMenu();
   }
   if (answers.saveInfo === "View Departments") {
     dbFunc.departments().then((res) => {
